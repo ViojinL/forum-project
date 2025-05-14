@@ -273,8 +273,8 @@ export default function CreatePostPage() {
                 id="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                rows={10}
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-300 rounded-md min-h-[200px] focus:ring-blue-500 focus:border-blue-500 shadow-sm transition duration-150 ease-in-out"
+                placeholder="分享你的想法和内容... (支持 Markdown)"
                 required
               ></textarea>
             </div>

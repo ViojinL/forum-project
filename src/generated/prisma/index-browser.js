@@ -155,7 +155,8 @@ exports.Prisma.CommentScalarFieldEnum = {
   authorId: 'authorId',
   postId: 'postId',
   isViolation: 'isViolation',
-  editCount: 'editCount'
+  editCount: 'editCount',
+  parentId: 'parentId'
 };
 
 exports.Prisma.PostViolationScalarFieldEnum = {

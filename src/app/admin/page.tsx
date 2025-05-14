@@ -11,23 +11,28 @@ export default function AdminDashboardPage() {
     categories: 0
   });
 
-  // 在实际项目中，这里可以从API获取真实统计数据
+  // 从API获取真实统计数据
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // 模拟API调用，实际项目中可以替换为真实API
-        // const response = await fetch('/api/admin/stats');
-        // const data = await response.json();
+        // 调用API获取真实数据
+        const response = await fetch('/api/admin/stats');
+        if (!response.ok) {
+          throw new Error('获取统计数据失败: ' + response.statusText);
+        }
+        const data = await response.json();
         
-        // 这里使用模拟数据，实际项目中应替换为真实数据
+        // 更新状态
         setStats({
-          posts: 3,
-          comments: 3,
-          users: 4,  // 包括管理员和普通用户
-          categories: 4
+          posts: data.posts || 0,
+          comments: data.comments || 0,
+          users: data.users || 0,
+          categories: data.categories || 0
         });
       } catch (error) {
         console.error("获取统计数据失败", error);
+        // 出错时显示0，避免显示错误的数据
+        setStats({ posts: 0, comments: 0, users: 0, categories: 0 });
       }
     };
 
@@ -93,6 +98,13 @@ export default function AdminDashboardPage() {
       icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
       link: "/admin/categories",
       color: "text-amber-600"
+    },
+    { 
+      title: "消息管理", 
+      description: "向用户发送站内消息通知",
+      icon: "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z",
+      link: "/admin/messages",
+      color: "text-rose-600"
     }
   ];
 

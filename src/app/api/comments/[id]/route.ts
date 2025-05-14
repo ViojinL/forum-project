@@ -18,9 +18,26 @@ export async function GET(
           select: {
             id: true,
             username: true,
+            avatar: true,
           },
         },
         post: true,
+        // Include all replies recursively
+        replies: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+                avatar: true,
+              },
+            },
+            replies: true, // This will recursively include all nested replies
+          },
+          orderBy: {
+            createdAt: "asc"
+          }
+        },
       },
     });
 
@@ -111,6 +128,7 @@ export async function PUT(
           select: {
             id: true,
             username: true,
+            avatar: true,
           },
         },
         post: {
@@ -118,6 +136,21 @@ export async function PUT(
             id: true,
             title: true,
           },
+        },
+        // Include replies so the frontend can display them
+        replies: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+                avatar: true,
+              },
+            },
+          },
+          orderBy: {
+            createdAt: "asc"
+          }
         },
       },
     });

@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
+import Image from "next/image";
 
 interface User {
   id: string;
@@ -37,7 +38,10 @@ export default function UserProfilePage() {
     username: "",
     contactInfo: "",
     signature: "",
+    avatar: "",
   });
+  const [avatarPreview, setAvatarPreview] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // 是否是当前登录用户的个人页面
   const isCurrentUser = session?.user?.id === userId;
@@ -72,7 +76,11 @@ export default function UserProfilePage() {
             username: data.user.username || "",
             contactInfo: data.user.contactInfo || "",
             signature: data.user.signature || "",
+            avatar: data.user.avatar || "",
           });
+          if (data.user.avatar) {
+            setAvatarPreview(data.user.avatar);
+          }
         }
       } catch (error) {
         console.error("加载用户信息失败:", error);
@@ -95,6 +103,43 @@ export default function UserProfilePage() {
       ...prev,
       [name]: value
     }));
+  };
+
+  // 处理头像上传
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isCurrentUser || !e.target.files || e.target.files.length === 0) return;
+    
+    const file = e.target.files[0];
+    if (!file.type.startsWith('image/')) {
+      alert('请上传图片文件');
+      return;
+    }
+
+    // 限制文件大小（2MB）
+    if (file.size > 2 * 1024 * 1024) {
+      alert('图片大小不能超过2MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (event.target?.result) {
+        const avatarDataUrl = event.target.result as string;
+        setAvatarPreview(avatarDataUrl);
+        setFormData(prev => ({
+          ...prev,
+          avatar: avatarDataUrl
+        }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // 触发文件选择对话框
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   // 提交更新的个人信息
@@ -192,6 +237,44 @@ export default function UserProfilePage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <h2 className="text-xl font-bold mb-4">编辑个人信息</h2>
               
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">头像</label>
+                <div className="flex items-center space-x-4">
+                  <div className="relative h-24 w-24 overflow-hidden rounded-full bg-gray-100 border border-gray-300">
+                    {avatarPreview ? (
+                      <Image 
+                        src={avatarPreview} 
+                        alt="头像预览" 
+                        fill 
+                        sizes="(max-width: 96px) 100vw, 96px"
+                        className="object-cover" 
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full w-full bg-gray-200 text-gray-500">
+                        用户头像
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleAvatarChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={triggerFileInput}
+                      className="px-3 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                    >
+                      选择头像
+                    </button>
+                    <p className="text-xs text-gray-500 mt-1">建议上传正方形图片，最大不超过2MB</p>
+                  </div>
+                </div>
+              </div>
+              
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">用户名</label>
                 <input
@@ -247,11 +330,28 @@ export default function UserProfilePage() {
             // 显示模式
             <div>
               <div className="flex justify-between items-start">
-                <div>
-                  <h2 className="text-2xl font-bold">{user.username}</h2>
-                  {user.email && (
-                    <p className="text-gray-600 mt-1">{user.email}</p>
-                  )}
+                <div className="flex items-center">
+                  <div className="relative h-16 w-16 overflow-hidden rounded-full bg-gray-100 mr-4">
+                    {user.avatar ? (
+                      <Image 
+                        src={user.avatar} 
+                        alt={`${user.username}的头像`} 
+                        fill 
+                        sizes="(max-width: 64px) 100vw, 64px"
+                        className="object-cover" 
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full w-full bg-gray-200 text-gray-500 text-xs">
+                        无头像
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold">{user.username}</h2>
+                    {user.email && (
+                      <p className="text-gray-600 mt-1">{user.email}</p>
+                    )}
+                  </div>
                 </div>
                 {isCurrentUser && (
                   <button
@@ -325,6 +425,18 @@ export default function UserProfilePage() {
                       <p className="text-sm text-gray-500">评论数量</p>
                       <p>{user._count.comments} 条</p>
                     </div>
+                    
+                    {user.contactInfo ? (
+                      <div>
+                        <p className="text-sm text-gray-500">联系方式</p>
+                        <p>{user.contactInfo}</p>
+                      </div>
+                    ) : (
+                      <div>
+                        <p className="text-sm text-gray-500">联系方式</p>
+                        <p className="text-gray-400">该用户还没有设置联系方式</p>
+                      </div>
+                    )}
                     
                     {user.signature ? (
                       <div>

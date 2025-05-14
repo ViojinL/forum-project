@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 
-
 interface UserWithId {
   id: string;
   username: string;
@@ -24,9 +23,6 @@ declare module "next-auth" {
       isAdmin: boolean;
       name?: string;
       image?: string;
-      contactInfo?: string;
-      signature?: string;
-      avatar?: string;
     }
   }
 }
@@ -36,17 +32,19 @@ declare module "next-auth/jwt" {
     id: string;
     username: string;
     isAdmin: boolean;
-    contactInfo?: string;
-    signature?: string;
-    avatar?: string;
   }
 }
 
 export const authOptions: NextAuthOptions = {
+  // 使用环境变量中的密钥或默认密钥
   secret: process.env.NEXTAUTH_SECRET || "your-secret-key",
+  // 选择JWT会话策略
   session: {
     strategy: "jwt",
+    // 设置较短的过期时间以降低出现431错误的可能性
+    maxAge: 24 * 60 * 60, // 1天
   },
+  // 页面路径
   pages: {
     signIn: "/login",
   },
@@ -54,15 +52,18 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "u90aeu7bb1", type: "email" },
-        password: { label: "u5bc6u7801", type: "password" },
+        email: { label: "邮箱", type: "email" },
+        password: { label: "密码", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
+          console.log("Missing credentials");
           return null;
         }
 
         try {
+          console.log("Looking up user by email:", credentials.email);
+          
           const user = await prisma.user.findUnique({
             where: {
               email: credentials.email,
@@ -72,47 +73,37 @@ export const authOptions: NextAuthOptions = {
               email: true,
               username: true,
               password: true,
-              contactInfo: true,
-              signature: true,
-              avatar: true,
+              isAdmin: true,
             }
           });
 
           if (!user) {
+            console.log("User not found with email:", credentials.email);
             return null;
           }
 
+          console.log("Found user, checking password");
+          
           const isPasswordValid = await compare(
             credentials.password,
             user.password
           );
 
           if (!isPasswordValid) {
+            console.log("Invalid password for user:", credentials.email);
             return null;
           }
 
-          // 使用原始SQL查询获取用户的isAdmin状态
-          const rawUser = await prisma.$queryRaw`
-            SELECT "isAdmin" FROM "User" WHERE "email" = ${credentials.email}
-          `;
-          
-          // 安全地访问查询结果
-          const isAdmin = Array.isArray(rawUser) && 
-            rawUser.length > 0 && 
-            typeof rawUser[0] === 'object' && 
-            rawUser[0] !== null && 
-            'isAdmin' in rawUser[0] ? 
-            Boolean(rawUser[0].isAdmin) : 
-            false;
+          console.log("Password valid, returning user data");
           
           return {
             id: user.id,
             email: user.email,
             username: user.username,
-            isAdmin: isAdmin,
-            contactInfo: user.contactInfo,
-            signature: user.signature,
-            avatar: user.avatar,
+            isAdmin: user.isAdmin,
+            contactInfo: undefined,
+            signature: undefined,
+            avatar: undefined,
           };
         } catch(error) {
           console.error("Authorization error:", error);
@@ -127,9 +118,6 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.username = token.username;
         session.user.isAdmin = token.isAdmin;
-        session.user.contactInfo = token.contactInfo;
-        session.user.signature = token.signature;
-        session.user.avatar = token.avatar;
       }
       return session;
     },
@@ -139,9 +127,6 @@ export const authOptions: NextAuthOptions = {
         token.id = u.id;
         token.username = u.username;
         token.isAdmin = u.isAdmin;
-        token.contactInfo = u.contactInfo;
-        token.signature = u.signature;
-        token.avatar = u.avatar;
       }
       return token;
     },

@@ -22,9 +22,9 @@ model User {
   createdAt               DateTime           @default(now())
   updatedAt               DateTime           @updatedAt
   comments                Comment[]
+  violationMarkedComments CommentViolation[] @relation("MarkedByAdmin")
   posts                   Post[]
   violationMarkedPosts    PostViolation[]    @relation("MarkedByAdmin")
-  violationMarkedComments CommentViolation[] @relation("MarkedByAdmin")
   inbox                   UserInbox[]
 }
 
@@ -46,8 +46,8 @@ model Post {
   isViolation Boolean         @default(false)
   editCount   Int             @default(0)
   comments    Comment[]
-  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   author      User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   violations  PostViolation[]
 }
 
@@ -60,33 +60,36 @@ model Comment {
   postId      String
   isViolation Boolean            @default(false)
   editCount   Int                @default(0)
-  post        Post               @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parentId    String?
+  parent      Comment?           @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[]          @relation("CommentReplies")
   author      User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post        Post               @relation(fields: [postId], references: [id], onDelete: Cascade)
   violations  CommentViolation[]
 }
 
 model PostViolation {
   id             String   @id @default(uuid())
-  post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId         String
-  markedByAdmin  User     @relation("MarkedByAdmin", fields: [adminId], references: [id])
   adminId        String
   reason         String
   pointsDeducted Int
   createdAt      DateTime @default(now())
+  markedByAdmin  User     @relation("MarkedByAdmin", fields: [adminId], references: [id])
+  post           Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([postId, adminId])
 }
 
 model CommentViolation {
   id             String   @id @default(uuid())
-  comment        Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId      String
-  markedByAdmin  User     @relation("MarkedByAdmin", fields: [adminId], references: [id])
   adminId        String
   reason         String
   pointsDeducted Int
   createdAt      DateTime @default(now())
+  markedByAdmin  User     @relation("MarkedByAdmin", fields: [adminId], references: [id])
+  comment        Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@unique([commentId, adminId])
 }
@@ -94,11 +97,11 @@ model CommentViolation {
 model UserInbox {
   id               String   @id @default(uuid())
   userId           String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   message          String
-  type             String // "post_violation", "comment_violation", "system", etc.
+  type             String
   relatedPostId    String?
   relatedCommentId String?
   isRead           Boolean  @default(false)
   createdAt        DateTime @default(now())
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -3,11 +3,15 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 import { toast } from "react-hot-toast";
+import ReactMarkdown from 'react-markdown';
+import DOMPurify from 'dompurify';
 
 interface Author {
   id: string;
   username: string;
+  avatar?: string;
 }
 
 interface Comment {
@@ -19,6 +23,9 @@ interface Comment {
   author: Author;
   editCount: number;
   isViolation?: boolean;
+  parentId?: string | null;
+  parent?: Comment | null;
+  replies?: Comment[];
 }
 
 interface CommentSectionProps {
@@ -37,7 +44,120 @@ export default function CommentSection({ postId, initialComments = [] }: Comment
   const [banUntil, setBanUntil] = useState<string | null>(null);
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editedContent, setEditedContent] = useState("");
+  
+  // 回复状态
+  const [replyingToId, setReplyingToId] = useState<string | null>(null);
+  const [replyContent, setReplyContent] = useState('');
+  const [replyToUsername, setReplyToUsername] = useState('');
 
+  // 当会话状态变化时，判断用户是否登录
+  const isUserLoggedIn = status === "authenticated" && session !== null;
+  
+  // 判断是否显示信用积分警告
+  const showCreditWarning = isUserLoggedIn && userCredits !== null && userCredits < 90;
+
+  // 回复相关函数
+  const handleReplyComment = (comment: Comment) => {
+    setReplyingToId(comment.id);
+    setReplyToUsername(comment.author.username);
+    setReplyContent("");
+  };
+  
+  const handleCancelReply = () => {
+    setReplyingToId(null);
+    setReplyContent("");
+  };
+  
+  const handleSubmitReply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!replyContent.trim() || !replyingToId) {
+      toast.error("回复内容不能为空");
+      return;
+    }
+
+    // 检查封禁状态
+    if (banUntil) {
+      const banEndTime = new Date(banUntil);
+      const timeLeft = Math.ceil((banEndTime.getTime() - Date.now()) / (1000 * 60 * 60));
+      toast.error(`您的账号因信用积分过低被限制发言，约 ${timeLeft} 小时后解除。`);
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      
+      // 将回复提交到 API
+      const response = await fetch("/api/comments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          content: replyContent, 
+          postId, 
+          parentId: replyingToId 
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "发表回复失败");
+      }
+
+      const { comment } = await response.json();
+      
+      // 刷新评论列表
+      const updatedComments = [...comments];
+      const parentCommentIndex = updatedComments.findIndex(c => c.id === replyingToId);
+      
+      if (parentCommentIndex !== -1) {
+        const parentComment = updatedComments[parentCommentIndex];
+        if (!parentComment.replies) {
+          parentComment.replies = [];
+        }
+        parentComment.replies.push(comment);
+        setComments(updatedComments);
+      } else {
+        // 如果找不到父评论，则从服务器重新获取所有评论
+        await fetchComments();
+      }
+      
+      // 清空回复表单
+      setReplyContent("");
+      setReplyingToId(null);
+      toast.success("回复成功");
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : "发表回复时出错，请稍后再试";
+      toast.error(errorMessage);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
+  // 获取评论的函数
+  const fetchComments = async () => {
+    try {
+      setIsLoading(true);
+      console.log('开始从 API 加载评论, postId:', postId);
+      
+      const response = await fetch(`/api/comments?postId=${postId}`);
+      if (!response.ok) {
+        throw new Error(`获取评论失败: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      if (data && Array.isArray(data.comments)) {
+        setComments(data.comments);
+      }
+    } catch (error) {
+      console.error('获取评论失败:', error);
+      setError(error instanceof Error ? error.message : '加载评论失败');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   // 格式化日期
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -47,9 +167,6 @@ export default function CommentSection({ postId, initialComments = [] }: Comment
       date.getMinutes()
     ).padStart(2, "0")}`;
   };
-
-  // 当会话状态变化时，判断用户是否登录
-  const isUserLoggedIn = status === "authenticated" && session !== null;
 
   // 获取用户信用积分和封禁状态
   useEffect(() => {
@@ -74,32 +191,52 @@ export default function CommentSection({ postId, initialComments = [] }: Comment
     }
   }, [session]);
 
-  // 加载评论（仅当没有初始评论时）
+  // 加载评论
   useEffect(() => {
-    // 如果已有初始评论，不需要再次加载
+    // 如果已有初始评论，只需初始化状态
     if (initialComments.length > 0) {
+      console.log('初始化评论数量:', initialComments.length);
+      setComments(initialComments);
       setIsLoading(false);
       return;
     }
     
-    const fetchComments = async () => {
+    // 没有初始评论时，从 API 加载
+    const loadComments = async () => {
       try {
         setIsLoading(true);
-        // 从 API 获取评论数据
+        console.log('开始从 API 加载评论, postId:', postId);
+        
         const response = await fetch(`/api/comments?postId=${postId}`);
-        if (!response.ok) throw new Error("加载评论失败");
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`获取评论失败: ${response.status} ${errorText}`);
+        }
+        
         const data = await response.json();
-        setComments(data.comments);
-        setIsLoading(false);
-      } catch (err) {
-        console.error("获取评论失败", err);
-        setError("加载评论时出错，请刷新页面重试");
+        console.log('获取到的评论数据:', data);
+        
+        if (data && Array.isArray(data.comments)) {
+          console.log('评论数量:', data.comments.length);
+          setComments(data.comments);
+        } else {
+          console.error('评论数据格式错误:', data);
+          setError('服务器返回的评论格式错误');
+        }
+      } catch (error) {
+        console.error('获取评论失败:', error);
+        setError(
+          error instanceof Error 
+            ? error.message 
+            : '加载评论失败，请刷新页面再试'
+        );
+      } finally {
         setIsLoading(false);
       }
     };
 
-    fetchComments();
-  }, [postId, initialComments.length]);
+    loadComments();
+  }, [postId, initialComments.length, initialComments]);
 
   // 提交评论
   const handleSubmitComment = async (e: React.FormEvent) => {
@@ -202,9 +339,6 @@ export default function CommentSection({ postId, initialComments = [] }: Comment
     }
   };
 
-  // 判断是否显示信用积分警告
-  const showCreditWarning = isUserLoggedIn && userCredits !== null && userCredits < 90;
-
   return (
     <div className="mt-8">
       <h2 className="text-xl font-semibold mb-4">评论 ({comments.length})</h2>
@@ -222,7 +356,9 @@ export default function CommentSection({ postId, initialComments = [] }: Comment
                   <textarea
                     value={editedContent}
                     onChange={(e) => setEditedContent(e.target.value)}
-                    className="w-full border border-gray-300 rounded-md p-3 min-h-[100px] focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm text-sm"
+                    rows={3}
+                    placeholder="编辑评论 (支持 Markdown)"
                     disabled={isSubmitting}
                   />
                   <div className="mt-2 flex justify-end space-x-2">
@@ -246,44 +382,144 @@ export default function CommentSection({ postId, initialComments = [] }: Comment
                 // 普通显示模式
                 <>
                   <div className="flex justify-between items-start">
-                    <div>
-                      <Link href={`/user/${comment.author.id}`} className="font-medium text-blue-600 hover:text-blue-800 hover:underline">
-                        {comment.author.username}
-                      </Link>
-                      {comment.isViolation && (
-                        <span className="ml-2 text-xs bg-red-100 text-red-800 px-1 py-0.5 rounded">
-                          已标记违规
-                        </span>
+                    <div className="flex items-center">
+                      {comment.author.avatar && (
+                        <div className="relative h-8 w-8 rounded-full overflow-hidden mr-2">
+                          <Image 
+                            src={comment.author.avatar} 
+                            alt={`${comment.author.username}的头像`}
+                            width={32}
+                            height={32}
+                            className="object-cover"
+                          />
+                        </div>
                       )}
+                      <div>
+                        <Link href={`/user/${comment.author.id}`} className="font-medium text-blue-600 hover:text-blue-800 hover:underline">
+                          {comment.author.username}
+                        </Link>
+                        {comment.isViolation && (
+                          <span className="ml-2 text-xs bg-red-100 text-red-800 px-1 py-0.5 rounded">
+                            已标记违规
+                          </span>
+                        )}
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-500 flex items-center">
+                    <div className="text-xs text-gray-500">
                       {comment.updatedAt && comment.updatedAt !== comment.createdAt && (
-                        <span className="mr-2 text-xs italic">已编辑</span>
+                        <span className="mr-1 italic">已编辑</span>
                       )}
                       {formatDate(comment.createdAt)}
-                      
-                      {/* 显示编辑按钮，仅评论作者可见 */}
-                      {session?.user?.id === comment.authorId && (
-                        <button
-                          onClick={() => handleEditComment(comment)}
-                          className="ml-2 text-xs text-blue-600 hover:text-blue-800"
-                          title={comment.editCount >= 2 ? "已达到编辑次数上限" : `剩余编辑次数: ${2 - comment.editCount}次`}
-                          disabled={comment.editCount >= 2}
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2 text-gray-700">
+                    <ReactMarkdown>
+                      {typeof window !== 'undefined' ? DOMPurify.sanitize(comment.content) : comment.content}
+                    </ReactMarkdown>
+                  </div>
+                  
+                  {/* 回复和编辑按钮 */}
+                  <div className="mt-2 flex justify-between">
+                    <div className="space-x-3">
+                      {isUserLoggedIn && !banUntil && (
+                        <button 
+                          onClick={() => handleReplyComment(comment)}
+                          className="text-xs text-blue-600 hover:text-blue-800"
                         >
-                          {comment.editCount < 2 ? (
-                            <span className="ml-2 text-xs bg-blue-100 text-blue-800 px-1 py-0.5 rounded">
-                              编辑 ({2 - comment.editCount})
-                            </span>
-                          ) : (
-                            <span className="ml-2 text-xs bg-gray-100 text-gray-600 px-1 py-0.5 rounded">
-                              已达编辑上限
-                            </span>
-                          )}
+                          回复
+                        </button>
+                      )}
+                      {isUserLoggedIn && session?.user?.id === comment.authorId && !banUntil && (
+                        <button 
+                          onClick={() => handleEditComment(comment)}
+                          className="text-xs text-green-600 hover:text-green-800"
+                        >
+                          编辑
                         </button>
                       )}
                     </div>
                   </div>
-                  <div className="mt-2 text-gray-700 whitespace-pre-line">{comment.content}</div>
+                  
+                  {/* 回复表单 */}
+                  {replyingToId === comment.id && (
+                    <div className="mt-3 pl-4 border-l-2 border-blue-200">
+                      <form onSubmit={handleSubmitReply} className="space-y-2">
+                        <p className="text-sm text-gray-500">
+                          回复给 <span className="font-medium">{replyToUsername}</span>:
+                        </p>
+                        <textarea
+                          value={replyContent}
+                          onChange={(e) => setReplyContent(e.target.value)}
+                          className="w-full border border-gray-300 rounded-md p-2 min-h-[80px] text-sm focus:ring-blue-500 focus:border-blue-500"
+                          placeholder="写下你的回复..."
+                          disabled={isSubmitting}
+                          required
+                        />
+                        <div className="flex justify-end space-x-2">
+                          <button
+                            type="button"
+                            onClick={handleCancelReply}
+                            className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
+                            disabled={isSubmitting}
+                          >
+                            取消
+                          </button>
+                          <button
+                            type="submit"
+                            className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                            disabled={isSubmitting}
+                          >
+                            {isSubmitting ? '发送中...' : '发送回复'}
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  )}
+                  
+                  {/* 显示回复 */}
+                  {comment.replies && comment.replies.length > 0 && (
+                    <div className="mt-3 space-y-3 pl-4 border-l-2 border-gray-100">
+                      {comment.replies.map((reply) => (
+                        <div key={reply.id} id={`comment-${reply.id}`} className="rounded-md bg-gray-50 p-3">
+                          <div className="flex justify-between items-start">
+                            <div className="flex items-center">
+                              {reply.author.avatar && (
+                                <div className="relative h-6 w-6 rounded-full overflow-hidden mr-2">
+                                  <Image 
+                                    src={reply.author.avatar} 
+                                    alt={`${reply.author.username}的头像`}
+                                    width={24}
+                                    height={24}
+                                    className="object-cover"
+                                  />
+                                </div>
+                              )}
+                              <Link href={`/user/${reply.author.id}`} className="font-medium text-blue-600 hover:text-blue-800 hover:underline text-sm">
+                                {reply.author.username}
+                              </Link>
+                              {reply.isViolation && (
+                                <span className="ml-2 text-xs bg-red-100 text-red-800 px-1 py-0.5 rounded">
+                                  已标记违规
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {reply.updatedAt && reply.updatedAt !== reply.createdAt && (
+                                <span className="mr-1 italic">已编辑</span>
+                              )}
+                              {formatDate(reply.createdAt)}
+                            </div>
+                          </div>
+                          <div className="mt-1 text-gray-700">
+                            <ReactMarkdown>
+                              {typeof window !== 'undefined' ? DOMPurify.sanitize(reply.content) : reply.content}
+                            </ReactMarkdown>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </>
               )}
             </div>

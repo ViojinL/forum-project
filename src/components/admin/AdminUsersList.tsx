@@ -11,13 +11,22 @@ interface User {
   email: string;
   isAdmin: boolean;
   creditScore?: number;
-  banUntil?: string;
+  banUntil?: string | null;
   createdAt: string;
   _count?: {
     posts: number;
     comments: number;
   };
 }
+
+// 根据信用积分返回对应的颜色样式
+const getCreditScoreColor = (creditScore?: number): string => {
+  if (creditScore === undefined) return 'text-gray-500';
+  if (creditScore >= 90) return 'text-green-600';
+  if (creditScore >= 80) return 'text-blue-600';
+  if (creditScore >= 70) return 'text-yellow-600';
+  return 'text-red-600';
+};
 
 export default function AdminUsersList() {
   const [users, setUsers] = useState<User[]>([]);
@@ -33,11 +42,11 @@ export default function AdminUsersList() {
       console.log('开始直接获取用户列表...');
       
       // 使用fetch直接发送到专门的API端点
-      const response = await fetch('/admin/debug-users/api');
+      const response = await fetch('/api/admin/users');
       console.log('调试API响应状态:', response.status);
       
       if (!response.ok) {
-        const errorData = await response.json().catch(e => ({ error: 'Could not parse error response' }));
+        const errorData = await response.json().catch(() => ({ error: 'Could not parse error response' }));
         console.error('调试API请求失败:', errorData);
         toast.error(`API错误: ${errorData.error || response.statusText || '未知错误'}`);
         setLoading(false);
@@ -82,7 +91,7 @@ export default function AdminUsersList() {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        await response.json(); // Consume the response
         toast.success(`用户权限更新成功`);
         
         // Update local state
@@ -94,12 +103,53 @@ export default function AdminUsersList() {
           )
         );
       } else {
-        const data = await response.json();
-        throw new Error(data.error || '更新失败');
+        const errorData = await response.json();
+        throw new Error(errorData.error || '更新失败');
       }
     } catch (error) {
       console.error('更新用户权限失败:', error);
       toast.error('更新用户权限失败，请稍后再试');
+    }
+  };
+
+  const handleSetCredit90 = async (userId: string) => {
+    if (!confirm(`确定要将该用户的信用积分设置为90分并解除封禁吗？`)) {
+      return;
+    }
+
+    try {
+      console.log(`正在设置用户 ${userId} 的信用积分为90并解除封禁...`);
+      
+      const response = await fetch('/api/admin/users', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          action: 'setCredit90',
+        }),
+      });
+
+      if (response.ok) {
+        await response.json(); // Consume the response
+        toast.success(`用户信用积分已设置为90分，并已解除封禁`);
+        
+        // Update local state
+        setUsers(
+          users.map((user) => 
+            user.id === userId 
+              ? { ...user, creditScore: 90, banUntil: null } 
+              : user
+          )
+        );
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.error || '更新失败');
+      }
+    } catch (error) {
+      console.error('设置信用积分失败:', error);
+      toast.error('设置信用积分失败，请稍后再试');
     }
   };
 
@@ -129,14 +179,17 @@ export default function AdminUsersList() {
                 管理员权限
               </th>
               <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                操作
+                管理员操作
+              </th>
+              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                信用积分 / 封禁状态
               </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {users.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-6 py-4 text-center text-sm text-gray-500">
+                <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
                   暂无用户
                 </td>
               </tr>
@@ -177,6 +230,28 @@ export default function AdminUsersList() {
                     >
                       {user.isAdmin ? '取消管理员' : '设为管理员'}
                     </button>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div className="flex flex-col">
+                      <div className="flex items-center space-x-2">
+                        <span className={`font-medium ${getCreditScoreColor(user.creditScore)}`}>
+                          {user.creditScore !== undefined ? `${user.creditScore}分` : '未知'}
+                        </span>
+                        {user.banUntil && (
+                          <span className="px-2 py-0.5 text-xs bg-red-100 text-red-800 rounded-full">
+                            已封禁至 {new Date(user.banUntil).toLocaleString()}
+                          </span>
+                        )}
+                      </div>
+                      <div className="mt-1">
+                        <button
+                          onClick={() => handleSetCredit90(user.id)}
+                          className="text-green-600 hover:text-green-900 text-sm"
+                        >
+                          设为90分并解除封禁
+                        </button>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))

@@ -34,8 +34,10 @@ export async function GET(
               select: {
                 id: true,
                 username: true,
+                avatar: true,
               },
             },
+            // 暂时移除所有可能使用parentId或replies的关联
           },
           orderBy: {
             createdAt: "desc",
@@ -141,8 +143,10 @@ export async function PUT(
               select: {
                 id: true,
                 username: true,
+                avatar: true,
               },
             },
+            // 暂时移除所有可能使用parentId或replies的关联
           },
           orderBy: {
             createdAt: "desc",

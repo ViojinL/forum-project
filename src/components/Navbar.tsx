@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import SearchBar from "./SearchBar";
+import Image from "next/image";
 
 interface Category {
   id: string;
@@ -110,7 +111,18 @@ const Navbar = () => {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="text-white hover:text-gray-200 text-sm flex items-center"
                 >
-                  <span>{session.user?.username || session.user?.name}</span>
+                  {session.user?.image ? (
+                    <div className="relative h-6 w-6 rounded-full overflow-hidden">
+                      <Image 
+                        src={session.user.image}
+                        alt={session.user.username || session.user.name || "User Avatar"}
+                        layout="fill"
+                        objectFit="cover"
+                      />
+                    </div>
+                  ) : (
+                    <span>{session.user?.username || session.user?.name}</span>
+                  )}
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
