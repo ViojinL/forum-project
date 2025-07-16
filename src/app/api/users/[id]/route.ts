@@ -9,7 +9,7 @@ export async function GET(
   context: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
 
     if (!id) {
       return NextResponse.json(
@@ -75,7 +75,7 @@ export async function PATCH(
   context: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
 
     // 验证用户是否已登录
     const session = await getServerSession(authOptions);
@@ -121,6 +121,7 @@ export async function PATCH(
     
     // 构建更新SQL
     const now = new Date();
+    let needsSessionRefresh = false;
     
     // 使用单个更新语句并且直接构建SQL字符串
     if (username !== undefined) {
@@ -129,6 +130,7 @@ export async function PATCH(
         SET "username" = ${username}, "updatedAt" = ${now}
         WHERE "id" = ${id}
       `;
+      needsSessionRefresh = true;
     }
     
     if (contactInfo !== undefined) {
@@ -153,6 +155,7 @@ export async function PATCH(
         SET "avatar" = ${avatar}, "updatedAt" = ${now}
         WHERE "id" = ${id}
       `;
+      needsSessionRefresh = true; // 头像更新需要刷新session
     }
     
     // 获取更新后的用户信息
@@ -171,7 +174,10 @@ export async function PATCH(
       WHERE "id" = ${id}
     `;
     
-    return NextResponse.json({ user: (updatedUsers as any[])[0] });
+    return NextResponse.json({ 
+      user: (updatedUsers as any[])[0],
+      needsSessionRefresh // 告诉前端需要刷新session
+    });
   } catch (error) {
     console.error("更新用户信息失败:", error);
     return NextResponse.json(

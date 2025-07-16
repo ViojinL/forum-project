@@ -2,7 +2,7 @@ import { serialize, parse } from 'cookie';
 
 // 设置短期cookie选项，避免cookie过大
 export const cookieOptions = {
-  maxAge: 7 * 24 * 60 * 60, // 一周而不是一个月
+  maxAge: 6 * 60 * 60, // 6小时而不是一周，减少cookie大小
   path: '/',
   httpOnly: true,
   secure: process.env.NODE_ENV === 'production',
@@ -23,7 +23,7 @@ export function getClearCookieString(name: string) {
   });
 }
 
-// 客户端清除cookie的方法
+// 客户端清除cookie的方法 - 增强版
 export function clientClearCookies() {
   const cookies = document.cookie.split(';');
   
@@ -31,6 +31,30 @@ export function clientClearCookies() {
     const cookie = cookies[i];
     const eqPos = cookie.indexOf('=');
     const name = eqPos > -1 ? cookie.substring(0, eqPos).trim() : cookie.trim();
-    document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/';
+    
+    // 清除不同路径和域名的cookie
+    const domains = [
+      window.location.hostname,
+      '.' + window.location.hostname,
+      'localhost',
+      '.localhost'
+    ];
+    
+    const paths = ['/', '/api', '/auth'];
+    
+    for (const domain of domains) {
+      for (const path of paths) {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${path}`;
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=${path};domain=${domain}`;
+      }
+    }
+  }
+  
+  // 清除localStorage和sessionStorage
+  try {
+    localStorage.clear();
+    sessionStorage.clear();
+  } catch (error) {
+    console.log('清理存储时出错:', error);
   }
 }

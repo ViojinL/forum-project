@@ -1,0 +1,14 @@
+.chatMessageContent {
+  word-break: break-word;
+}
+
+.chatMessageContent a {
+  color: #3366cc;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.chatMessageContent a:hover {
+  color: #1a478a;
+  text-decoration: underline;
+}

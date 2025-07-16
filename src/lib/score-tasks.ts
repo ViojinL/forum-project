@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export class ScoreTasksService {
   /**
    * 处理已解封用户的信用积分调整
-   * 当用户被封禁一天后，系统将自动将其信用积分设置为80
+   * 当用户被封禁一天后，系统将自动将其信用积分设置为80分并解除封禁
    */
   static async handleUnbannedUserScores(): Promise<number> {
     const now = new Date();
@@ -27,8 +27,8 @@ export class ScoreTasksService {
     const processedUserIds: string[] = [];
 
     for (const user of unbannedUsers) {
-      // 判断用户是否已被处理（如果信用积分已经是80，则认为已处理）
-      if (user.creditScore !== 80) {
+      // 判断用户是否已被处理（如果信用积分已经是80且封禁时间已清除，则认为已处理）
+      if (user.creditScore !== 80 || user.banUntil !== null) {
         // 更新用户信用积分为80，并清除封禁时间
         await prisma.user.update({
           where: { id: user.id },

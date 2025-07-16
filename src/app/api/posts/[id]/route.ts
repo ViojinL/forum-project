@@ -9,7 +9,7 @@ export async function GET(
   context: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
 
     if (!id) {
       return NextResponse.json(
@@ -25,6 +25,7 @@ export async function GET(
           select: {
             id: true,
             username: true,
+            avatar: true,
           },
         },
         category: true,
@@ -69,7 +70,7 @@ export async function PUT(
   context: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
     
     // Check if user is authenticated
     const session = await getServerSession(authOptions);
@@ -134,6 +135,7 @@ export async function PUT(
           select: {
             id: true,
             username: true,
+            avatar: true,
           },
         },
         category: true,
@@ -174,7 +176,7 @@ export async function DELETE(
   context: { params: { id: string } }
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
     
     // Check if user is authenticated
     const session = await getServerSession(authOptions);

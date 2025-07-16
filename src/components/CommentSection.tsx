@@ -5,8 +5,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
-import ReactMarkdown from 'react-markdown';
-import DOMPurify from 'dompurify';
+import ContentRenderer from './ContentRenderer';
 
 interface Author {
   id: string;
@@ -414,9 +413,7 @@ export default function CommentSection({ postId, initialComments = [] }: Comment
                   </div>
                   
                   <div className="mt-2 text-gray-700">
-                    <ReactMarkdown>
-                      {typeof window !== 'undefined' ? DOMPurify.sanitize(comment.content) : comment.content}
-                    </ReactMarkdown>
+                    <ContentRenderer content={comment.content} />
                   </div>
                   
                   {/* 回复和编辑按钮 */}
@@ -512,9 +509,7 @@ export default function CommentSection({ postId, initialComments = [] }: Comment
                             </div>
                           </div>
                           <div className="mt-1 text-gray-700">
-                            <ReactMarkdown>
-                              {typeof window !== 'undefined' ? DOMPurify.sanitize(reply.content) : reply.content}
-                            </ReactMarkdown>
+                            <ContentRenderer content={reply.content} />
                           </div>
                         </div>
                       ))}

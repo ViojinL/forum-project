@@ -1,0 +1,10 @@
+# 忽略Prisma生成的文件
+src/generated/**/*
+
+# 忽略CommonJS文件中的require警告
+*.cjs
+
+# 忽略构建文件
+dist/
+build/
+.next/

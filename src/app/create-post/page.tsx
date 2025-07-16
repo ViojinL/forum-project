@@ -4,6 +4,8 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Navbar from "@/components/Navbar";
+import QuestionHelper from "@/components/qa/QuestionHelper";
+import RichTextEditor from "@/components/RichTextEditor";
 
 export default function CreatePostPage() {
   const [title, setTitle] = useState("");
@@ -262,21 +264,26 @@ export default function CreatePostPage() {
               />
             </div>
 
+            {/* 在标题和内容之间添加智能问答建议 */}
+            <QuestionHelper 
+              question={title}
+              categoryId={categoryId}
+              onSelectAnswer={(answer) => setContent(answer)}
+            />
+
             <div>
               <label
                 htmlFor="content"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-2"
               >
                 内容 <span className="text-red-500">*</span>
               </label>
-              <textarea
-                id="content"
+              <RichTextEditor
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-md min-h-[200px] focus:ring-blue-500 focus:border-blue-500 shadow-sm transition duration-150 ease-in-out"
-                placeholder="分享你的想法和内容... (支持 Markdown)"
-                required
-              ></textarea>
+                onChange={setContent}
+                placeholder="分享你的想法和内容... (支持 Markdown 和文件上传)"
+                className="focus:ring-blue-500 focus:border-blue-500"
+              />
             </div>
 
             <div className="flex items-center justify-end">

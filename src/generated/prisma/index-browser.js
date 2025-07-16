@@ -126,7 +126,10 @@ exports.Prisma.UserScalarFieldEnum = {
   signature: 'signature',
   avatar: 'avatar',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  name: 'name',
+  image: 'image',
+  emailVerified: 'emailVerified'
 };
 
 exports.Prisma.CategoryScalarFieldEnum = {
@@ -188,6 +191,93 @@ exports.Prisma.UserInboxScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.KnowledgeBaseScalarFieldEnum = {
+  id: 'id',
+  question: 'question',
+  answer: 'answer',
+  timesUsed: 'timesUsed',
+  categoryId: 'categoryId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AnnouncementScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  content: 'content',
+  isActive: 'isActive',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.QuestionRoutingScalarFieldEnum = {
+  id: 'id',
+  questionId: 'questionId',
+  routedToId: 'routedToId',
+  status: 'status',
+  createdAt: 'createdAt',
+  completedAt: 'completedAt'
+};
+
+exports.Prisma.AIModerationConfigScalarFieldEnum = {
+  id: 'id',
+  autoMarkThreshold: 'autoMarkThreshold',
+  notifyAdminThreshold: 'notifyAdminThreshold',
+  enableAutoDeduction: 'enableAutoDeduction',
+  lastUpdated: 'lastUpdated',
+  updatedBy: 'updatedBy'
+};
+
+exports.Prisma.CommentModerationLogScalarFieldEnum = {
+  id: 'id',
+  commentId: 'commentId',
+  flagged: 'flagged',
+  highestCategory: 'highestCategory',
+  highestScore: 'highestScore',
+  fullResultJson: 'fullResultJson',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PostModerationLogScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  flagged: 'flagged',
+  highestCategory: 'highestCategory',
+  highestScore: 'highestScore',
+  fullResultJson: 'fullResultJson',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  refresh_token: 'refresh_token',
+  access_token: 'access_token',
+  expires_at: 'expires_at',
+  token_type: 'token_type',
+  scope: 'scope',
+  id_token: 'id_token',
+  session_state: 'session_state'
+};
+
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  sessionToken: 'sessionToken',
+  userId: 'userId',
+  expires: 'expires'
+};
+
+exports.Prisma.VerificationTokenScalarFieldEnum = {
+  identifier: 'identifier',
+  token: 'token',
+  expires: 'expires'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -206,7 +296,16 @@ exports.Prisma.ModelName = {
   Comment: 'Comment',
   PostViolation: 'PostViolation',
   CommentViolation: 'CommentViolation',
-  UserInbox: 'UserInbox'
+  UserInbox: 'UserInbox',
+  KnowledgeBase: 'KnowledgeBase',
+  Announcement: 'Announcement',
+  QuestionRouting: 'QuestionRouting',
+  AIModerationConfig: 'AIModerationConfig',
+  CommentModerationLog: 'CommentModerationLog',
+  PostModerationLog: 'PostModerationLog',
+  Account: 'Account',
+  Session: 'Session',
+  VerificationToken: 'VerificationToken'
 };
 
 /**

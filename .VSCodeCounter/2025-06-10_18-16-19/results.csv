@@ -1,0 +1,138 @@
+"filename", "language", "Markdown", "JSON with Comments", "JavaScript", "XML", "MS SQL", "TypeScript", "PostCSS", "TypeScript JSX", "JSON", "comment", "blank", "total"
+"c:\software\vscode\code\JavaScript\forum4\README.md", "Markdown", 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 32
+"c:\software\vscode\code\JavaScript\forum4\eslint.config.mjs", "JavaScript", 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 5, 17
+"c:\software\vscode\code\JavaScript\forum4\next.config.js", "JavaScript", 0, 0, 16, 0, 0, 0, 0, 0, 0, 8, 2, 26
+"c:\software\vscode\code\JavaScript\forum4\next.config.ts", "TypeScript", 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 3, 8
+"c:\software\vscode\code\JavaScript\forum4\package-lock.json", "JSON", 0, 0, 0, 0, 0, 0, 0, 0, 9978, 0, 1, 9979
+"c:\software\vscode\code\JavaScript\forum4\package.json", "JSON", 0, 0, 0, 0, 0, 0, 0, 0, 59, 0, 1, 60
+"c:\software\vscode\code\JavaScript\forum4\postcss.config.mjs", "JavaScript", 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250424130915_init\migration.sql", "MS SQL", 0, 0, 0, 0, 37, 0, 0, 0, 0, 7, 7, 51
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250424143933_add_user_profile_fields\migration.sql", "MS SQL", 0, 0, 0, 0, 3, 0, 0, 0, 0, 1, 1, 5
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250508090138_add_admin_role\migration.sql", "MS SQL", 0, 0, 0, 0, 21, 0, 0, 0, 0, 1, 1, 23
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250508093037_add_credit_score\migration.sql", "MS SQL", 0, 0, 0, 0, 23, 0, 0, 0, 0, 1, 1, 25
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250508111220_add_violation_tracking\migration.sql", "MS SQL", 0, 0, 0, 0, 55, 0, 0, 0, 0, 5, 5, 65
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250508114258_add_inbox_and_edit_count\migration.sql", "MS SQL", 0, 0, 0, 0, 31, 0, 0, 0, 0, 2, 2, 35
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250508114453_add_comment_edit_count\migration.sql", "MS SQL", 0, 0, 0, 0, 19, 0, 0, 0, 0, 1, 1, 21
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250514050557_add_comment_replies\migration.sql", "MS SQL", 0, 0, 0, 0, 21, 0, 0, 0, 0, 1, 1, 23
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250528091458_add_ai_moderation_config\migration.sql", "MS SQL", 0, 0, 0, 0, 8, 0, 0, 0, 0, 1, 1, 10
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250528092711_add_qa_features\migration.sql", "MS SQL", 0, 0, 0, 0, 23, 0, 0, 0, 0, 3, 3, 29
+"c:\software\vscode\code\JavaScript\forum4\prisma\migrations\20250528100930_add_announcement_model\migration.sql", "MS SQL", 0, 0, 0, 0, 29, 0, 0, 0, 0, 2, 2, 33
+"c:\software\vscode\code\JavaScript\forum4\public\file.svg", "XML", 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\public\globe.svg", "XML", 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\public\next.svg", "XML", 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\public\vercel.svg", "XML", 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\public\window.svg", "XML", 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\scripts\create-ai-config.mjs", "JavaScript", 0, 0, 37, 0, 0, 0, 0, 0, 0, 3, 8, 48
+"c:\software\vscode\code\JavaScript\forum4\scripts\list-users.js", "JavaScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 6, 33
+"c:\software\vscode\code\JavaScript\forum4\scripts\prepare-production.mjs", "JavaScript", 0, 0, 69, 0, 0, 0, 0, 0, 0, 9, 14, 92
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin-check\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 37, 0, 2, 6, 45
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\ai-moderation\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 202, 0, 4, 27, 233
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\categories\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 266, 0, 2, 27, 295
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\comments\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 2, 16
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\knowledge-base\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 330, 0, 8, 34, 372
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 22, 0, 2, 4, 28
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\messages\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 145, 0, 0, 21, 166
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\navigation.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 36, 0, 0, 6, 42
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 203, 0, 7, 11, 221
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\posts\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 2, 16
+"c:\software\vscode\code\JavaScript\forum4\src\app\admin\users\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 2, 16
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\ai-moderation\route.ts", "TypeScript", 0, 0, 0, 0, 0, 96, 0, 0, 0, 11, 14, 121
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\categories\[id]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 111, 0, 0, 0, 13, 18, 142
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\categories\route.ts", "TypeScript", 0, 0, 0, 0, 0, 53, 0, 0, 0, 6, 8, 67
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\comments\[id]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 52, 0, 0, 0, 4, 8, 64
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\comments\[id]\violation\route.ts", "TypeScript", 0, 0, 0, 0, 0, 159, 0, 0, 0, 18, 26, 203
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\knowledge-base\[id]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 156, 0, 0, 0, 14, 23, 193
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\knowledge-base\route.ts", "TypeScript", 0, 0, 0, 0, 0, 87, 0, 0, 0, 10, 13, 110
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\messages\route.ts", "TypeScript", 0, 0, 0, 0, 0, 89, 0, 0, 0, 11, 15, 115
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\posts\[id]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 50, 0, 0, 0, 5, 8, 63
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\posts\[id]\violation\route.ts", "TypeScript", 0, 0, 0, 0, 0, 158, 0, 0, 0, 18, 26, 202
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\replies\route.ts", "TypeScript", 0, 0, 0, 0, 0, 69, 0, 0, 0, 7, 9, 85
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\stats\route.ts", "TypeScript", 0, 0, 0, 0, 0, 44, 0, 0, 0, 5, 6, 55
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\admin\users\route.ts", "TypeScript", 0, 0, 0, 0, 0, 147, 0, 0, 0, 17, 25, 189
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\auth\[...nextauth]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 3, 7
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\categories\[id]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 26, 0, 0, 0, 2, 5, 33
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\categories\route.ts", "TypeScript", 0, 0, 0, 0, 0, 20, 0, 0, 0, 2, 3, 25
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\comments\[id]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 188, 0, 0, 0, 15, 23, 226
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\comments\[id]\violations\route.ts", "TypeScript", 0, 0, 0, 0, 0, 56, 0, 0, 0, 3, 6, 65
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\comments\route.ts", "TypeScript", 0, 0, 0, 0, 0, 235, 0, 0, 0, 25, 37, 297
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\moderation\route.ts", "TypeScript", 0, 0, 0, 0, 0, 43, 0, 0, 0, 4, 8, 55
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\posts\[id]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 187, 0, 0, 0, 15, 25, 227
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\posts\[id]\violations\route.ts", "TypeScript", 0, 0, 0, 0, 0, 56, 0, 0, 0, 3, 6, 65
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\posts\hot\route.ts", "TypeScript", 0, 0, 0, 0, 0, 35, 0, 0, 0, 3, 4, 42
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\posts\route.ts", "TypeScript", 0, 0, 0, 0, 0, 144, 0, 0, 0, 14, 20, 178
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\posts\search\route.ts", "TypeScript", 0, 0, 0, 0, 0, 44, 0, 0, 0, 1, 5, 50
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\qa\search-content\route.ts", "TypeScript", 0, 0, 0, 0, 0, 36, 0, 0, 0, 4, 6, 46
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\qa\suggest\route.ts", "TypeScript", 0, 0, 0, 0, 0, 73, 0, 0, 0, 14, 19, 106
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\qa\use\[id]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 33, 0, 0, 0, 2, 7, 42
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\register\route.ts", "TypeScript", 0, 0, 0, 0, 0, 72, 0, 0, 0, 8, 13, 93
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\seed\route.ts", "TypeScript", 0, 0, 0, 0, 0, 48, 0, 0, 0, 5, 6, 59
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\setup-db\route.ts", "TypeScript", 0, 0, 0, 0, 0, 75, 0, 0, 0, 5, 9, 89
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\tasks\credit-score\route.ts", "TypeScript", 0, 0, 0, 0, 0, 29, 0, 0, 0, 7, 5, 41
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\temp_stats_route.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\user-exists\route.ts", "TypeScript", 0, 0, 0, 0, 0, 19, 0, 0, 0, 3, 4, 26
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\user\inbox\[id]\read\route.ts", "TypeScript", 0, 0, 0, 0, 0, 46, 0, 0, 0, 5, 8, 59
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\user\inbox\reply\route.ts", "TypeScript", 0, 0, 0, 0, 0, 76, 0, 0, 0, 8, 11, 95
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\user\inbox\route.ts", "TypeScript", 0, 0, 0, 0, 0, 27, 0, 0, 0, 3, 4, 34
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\user\inbox\unread-count\route.ts", "TypeScript", 0, 0, 0, 0, 0, 29, 0, 0, 0, 3, 4, 36
+"c:\software\vscode\code\JavaScript\forum4\src\app\api\users\[id]\route.ts", "TypeScript", 0, 0, 0, 0, 0, 146, 0, 0, 0, 14, 22, 182
+"c:\software\vscode\code\JavaScript\forum4\src\app\category\[id]\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 204, 0, 10, 20, 234
+"c:\software\vscode\code\JavaScript\forum4\src\app\clear-cookies\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 56, 0, 2, 7, 65
+"c:\software\vscode\code\JavaScript\forum4\src\app\create-post\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 264, 0, 13, 35, 312
+"c:\software\vscode\code\JavaScript\forum4\src\app\globals.css", "PostCSS", 0, 0, 0, 0, 0, 0, 22, 0, 0, 0, 5, 27
+"c:\software\vscode\code\JavaScript\forum4\src\app\layout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 22, 0, 0, 3, 25
+"c:\software\vscode\code\JavaScript\forum4\src\app\login\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 116, 0, 2, 13, 131
+"c:\software\vscode\code\JavaScript\forum4\src\app\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 97, 0, 6, 12, 115
+"c:\software\vscode\code\JavaScript\forum4\src\app\post\[id]\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 372, 0, 9, 32, 413
+"c:\software\vscode\code\JavaScript\forum4\src\app\register\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 211, 0, 5, 25, 241
+"c:\software\vscode\code\JavaScript\forum4\src\app\search\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 164, 0, 8, 21, 193
+"c:\software\vscode\code\JavaScript\forum4\src\app\user\[id]\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 454, 0, 21, 49, 524
+"c:\software\vscode\code\JavaScript\forum4\src\app\user\inbox\page.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 215, 0, 4, 23, 242
+"c:\software\vscode\code\JavaScript\forum4\src\components\AnnouncementModal.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 107, 0, 6, 15, 128
+"c:\software\vscode\code\JavaScript\forum4\src\components\AuthProvider.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 3, 8
+"c:\software\vscode\code\JavaScript\forum4\src\components\CommentSection.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 504, 0, 29, 59, 592
+"c:\software\vscode\code\JavaScript\forum4\src\components\HotPosts.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 56, 0, 0, 8, 64
+"c:\software\vscode\code\JavaScript\forum4\src\components\IntroductionModal.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 128, 0, 0, 14, 142
+"c:\software\vscode\code\JavaScript\forum4\src\components\Navbar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 173, 0, 2, 13, 188
+"c:\software\vscode\code\JavaScript\forum4\src\components\PostList.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 216, 0, 14, 26, 256
+"c:\software\vscode\code\JavaScript\forum4\src\components\SearchBar.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 32, 0, 0, 5, 37
+"c:\software\vscode\code\JavaScript\forum4\src\components\admin\AdminCommentsList.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 262, 0, 8, 31, 301
+"c:\software\vscode\code\JavaScript\forum4\src\components\admin\AdminLayout.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 126, 0, 5, 11, 142
+"c:\software\vscode\code\JavaScript\forum4\src\components\admin\AdminPostsList.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 244, 0, 3, 24, 271
+"c:\software\vscode\code\JavaScript\forum4\src\components\admin\AdminUsersList.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 238, 0, 4, 22, 264
+"c:\software\vscode\code\JavaScript\forum4\src\components\qa\ChatWidget.module.css", "PostCSS", 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 3, 15
+"c:\software\vscode\code\JavaScript\forum4\src\components\qa\ChatWidget.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 213, 0, 24, 27, 264
+"c:\software\vscode\code\JavaScript\forum4\src\components\qa\QuestionHelper.tsx", "TypeScript JSX", 0, 0, 0, 0, 0, 0, 0, 100, 0, 6, 17, 123
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\client.d.ts", "TypeScript", 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\client.js", "JavaScript", 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\default.d.ts", "TypeScript", 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\default.js", "JavaScript", 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\edge.d.ts", "TypeScript", 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\edge.js", "JavaScript", 0, 0, 263, 0, 0, 0, 0, 0, 0, 19, 39, 321
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\index-browser.js", "JavaScript", 0, 0, 250, 0, 0, 0, 0, 0, 0, 19, 38, 307
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\index.d.ts", "TypeScript", 0, 0, 0, 0, 0, 13767, 0, 0, 0, 9058, 1885, 24710
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\index.js", "JavaScript", 0, 0, 277, 0, 0, 0, 0, 0, 0, 21, 44, 342
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\package.json", "JSON", 0, 0, 0, 0, 0, 0, 0, 0, 140, 0, 0, 140
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\runtime\edge-esm.js", "JavaScript", 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 6, 32
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\runtime\edge.js", "JavaScript", 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 6, 32
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\runtime\index-browser.d.ts", "TypeScript", 0, 0, 0, 0, 0, 264, 0, 0, 0, 20, 87, 371
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\runtime\index-browser.js", "JavaScript", 0, 0, 1, 0, 0, 0, 0, 0, 0, 12, 1, 14
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\runtime\library.d.ts", "TypeScript", 0, 0, 0, 0, 0, 2300, 0, 0, 0, 846, 459, 3605
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\runtime\library.js", "JavaScript", 0, 0, 116, 0, 0, 0, 0, 0, 0, 0, 28, 144
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\runtime\react-native.js", "JavaScript", 0, 0, 67, 0, 0, 0, 0, 0, 0, 0, 14, 81
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\runtime\wasm.js", "JavaScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 6, 33
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\wasm.d.ts", "TypeScript", 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1
+"c:\software\vscode\code\JavaScript\forum4\src\generated\prisma\wasm.js", "JavaScript", 0, 0, 250, 0, 0, 0, 0, 0, 0, 19, 38, 307
+"c:\software\vscode\code\JavaScript\forum4\src\lib\ai\contentModeration.ts", "TypeScript", 0, 0, 0, 0, 0, 360, 0, 0, 0, 91, 83, 534
+"c:\software\vscode\code\JavaScript\forum4\src\lib\ai\moderationMiddleware.ts", "TypeScript", 0, 0, 0, 0, 0, 154, 0, 0, 0, 37, 28, 219
+"c:\software\vscode\code\JavaScript\forum4\src\lib\ai\moderationService.ts", "TypeScript", 0, 0, 0, 0, 0, 240, 0, 0, 0, 72, 44, 356
+"c:\software\vscode\code\JavaScript\forum4\src\lib\auth.ts", "TypeScript", 0, 0, 0, 0, 0, 118, 0, 0, 0, 4, 13, 135
+"c:\software\vscode\code\JavaScript\forum4\src\lib\cookies.ts", "TypeScript", 0, 0, 0, 0, 0, 27, 0, 0, 0, 4, 6, 37
+"c:\software\vscode\code\JavaScript\forum4\src\lib\prisma.ts", "TypeScript", 0, 0, 0, 0, 0, 11, 0, 0, 0, 4, 5, 20
+"c:\software\vscode\code\JavaScript\forum4\src\lib\score-tasks.ts", "TypeScript", 0, 0, 0, 0, 0, 70, 0, 0, 0, 27, 19, 116
+"c:\software\vscode\code\JavaScript\forum4\src\lib\seed.ts", "TypeScript", 0, 0, 0, 0, 0, 37, 0, 0, 0, 5, 5, 47
+"c:\software\vscode\code\JavaScript\forum4\src\services\contentIndexer.ts", "TypeScript", 0, 0, 0, 0, 0, 137, 0, 0, 0, 46, 31, 214
+"c:\software\vscode\code\JavaScript\forum4\src\services\moderationService.ts", "TypeScript", 0, 0, 0, 0, 0, 233, 0, 0, 0, 58, 36, 327
+"c:\software\vscode\code\JavaScript\forum4\src\services\simpleModerationService.ts", "TypeScript", 0, 0, 0, 0, 0, 162, 0, 0, 0, 44, 23, 229
+"c:\software\vscode\code\JavaScript\forum4\tsconfig.json", "JSON with Comments", 0, 28, 0, 0, 0, 0, 0, 0, 0, 0, 1, 29
+"c:\software\vscode\code\JavaScript\forum4\软件工程概论大作业模板.md", "Markdown", 399, 0, 0, 0, 0, 0, 0, 0, 0, 0, 110, 509
+"Total", "-", 421, 28, 1470, 5, 270, 20906, 34, 5862, 10177, 10965, 4261, 54399

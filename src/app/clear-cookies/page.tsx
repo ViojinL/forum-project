@@ -9,15 +9,48 @@ export default function ClearCookiesPage() {
   const [cleared, setCleared] = useState(false);
 
   useEffect(() => {
-    // 立即清除所有cookies
-    clientClearCookies();
+    // 强力清除所有cookies，包括可能导致431错误的大型cookies
+    const clearAllCookies = () => {
+      // 清除所有cookies
+      document.cookie.split(";").forEach(function(c) { 
+        document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); 
+      });
+      
+      // 清除localStorage
+      try {
+        localStorage.clear();
+      } catch (e) {
+        console.warn("无法清除localStorage:", e);
+      }
+      
+      // 清除sessionStorage
+      try {
+        sessionStorage.clear();
+      } catch (e) {
+        console.warn("无法清除sessionStorage:", e);
+      }
+      
+      // 使用我们的自定义清理功能
+      clientClearCookies();
+    };
+    
+    // 立即清除
+    clearAllCookies();
     
     // 如果用户已登录，执行登出操作
     signOut({ redirect: false }).then(() => {
-      setCleared(true);
+      // 登出后再次清理，确保完全清除
+      setTimeout(() => {
+        clearAllCookies();
+        setCleared(true);
+      }, 100);
     }).catch(error => {
       console.error("登出错误:", error);
-      setCleared(true); // 即使有错误也标记为已清理
+      // 即使有错误也进行清理
+      setTimeout(() => {
+        clearAllCookies();
+        setCleared(true);
+      }, 100);
     });
   }, []);
 

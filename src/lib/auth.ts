@@ -8,10 +8,6 @@ interface UserWithId {
   username: string;
   email: string;
   isAdmin: boolean;
-  contactInfo?: string;
-  signature?: string;
-  avatar?: string;
-  [key: string]: string | boolean | undefined;
 }
 
 declare module "next-auth" {
@@ -21,8 +17,7 @@ declare module "next-auth" {
       email: string;
       username: string;
       isAdmin: boolean;
-      name?: string;
-      image?: string;
+      avatar?: string;
     }
   }
 }
@@ -36,38 +31,38 @@ declare module "next-auth/jwt" {
 }
 
 export const authOptions: NextAuthOptions = {
-  // 使用环境变量中的密钥或默认密钥
-  secret: process.env.NEXTAUTH_SECRET || "your-secret-key",
-  // 选择JWT会话策略
+  secret: process.env.NEXTAUTH_SECRET || "forum4-secret-key",
+  
+  // 使用JWT策略，最小化配置
   session: {
     strategy: "jwt",
-    // 设置较短的过期时间以降低出现431错误的可能性
-    maxAge: 24 * 60 * 60, // 1天
+    maxAge: 6 * 60 * 60, // 6小时
+    updateAge: 30 * 60, // 30分钟更新
   },
-  // 页面路径
+  
+  jwt: {
+    maxAge: 6 * 60 * 60, // 6小时
+  },
+  
   pages: {
     signIn: "/login",
   },
+  
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
-        email: { label: "邮箱", type: "email" },
-        password: { label: "密码", type: "password" },
+        email: { type: "email" },
+        password: { type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          console.log("Missing credentials");
           return null;
         }
 
         try {
-          console.log("Looking up user by email:", credentials.email);
-          
           const user = await prisma.user.findUnique({
-            where: {
-              email: credentials.email,
-            },
+            where: { email: credentials.email },
             select: {
               id: true,
               email: true,
@@ -77,58 +72,63 @@ export const authOptions: NextAuthOptions = {
             }
           });
 
-          if (!user) {
-            console.log("User not found with email:", credentials.email);
+          if (!user || !await compare(credentials.password, user.password)) {
             return null;
           }
-
-          console.log("Found user, checking password");
-          
-          const isPasswordValid = await compare(
-            credentials.password,
-            user.password
-          );
-
-          if (!isPasswordValid) {
-            console.log("Invalid password for user:", credentials.email);
-            return null;
-          }
-
-          console.log("Password valid, returning user data");
           
           return {
             id: user.id,
             email: user.email,
             username: user.username,
             isAdmin: user.isAdmin,
-            contactInfo: undefined,
-            signature: undefined,
-            avatar: undefined,
           };
-        } catch(error) {
-          console.error("Authorization error:", error);
+        } catch {
           return null;
         }
       },
     }),
   ],
+  
   callbacks: {
     async session({ session, token }) {
-      if (token && session.user) {
+      if (token) {
         session.user.id = token.id;
         session.user.username = token.username;
         session.user.isAdmin = token.isAdmin;
+        
+        // 动态获取avatar，不存储在JWT中
+        try {
+          const user = await prisma.user.findUnique({
+            where: { id: token.id },
+            select: { avatar: true }
+          });
+          session.user.avatar = user?.avatar || undefined;
+        } catch (error) {
+          console.error('获取用户头像失败:', error);
+          session.user.avatar = undefined;
+        }
       }
       return session;
     },
+    
     async jwt({ token, user }) {
+      // 只在登录时设置用户基本信息，不包含avatar
       if (user) {
-        const u = user as UserWithId;
-        token.id = u.id;
-        token.username = u.username;
-        token.isAdmin = u.isAdmin;
+        const userWithId = user as UserWithId;
+        token.id = userWithId.id;
+        token.username = userWithId.username;
+        token.isAdmin = userWithId.isAdmin;
       }
+      
       return token;
     },
+  },
+  
+  // 移除所有调试和复杂功能
+  debug: false,
+  logger: {
+    error: () => {},
+    warn: () => {},
+    debug: () => {},
   },
 };

@@ -261,6 +261,29 @@ export async function POST(req: NextRequest) {
         }
       });
     }
+    
+    // 调用AI内容审核API
+    try {
+      const moderationRes = await fetch(`${req.nextUrl.origin}/api/moderation`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'comment',
+          id: comment.id,
+          content,
+          authorId: userId
+        }),
+      });
+      
+      if (!moderationRes.ok) {
+        console.error('AI内容审核API调用失败:', await moderationRes.text());
+      }
+    } catch (error) {
+      console.error('AI内容审核失败，但评论仍然已创建:', error);
+      // 审核失败不阻止评论创建，仅记录错误
+    }
 
     return NextResponse.json({ comment }, { status: 201 });
   } catch (error) {

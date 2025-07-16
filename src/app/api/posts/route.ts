@@ -65,8 +65,8 @@ export async function POST(req: NextRequest) {
     
     // 检查用户信用积分是否低于80
     if (user.creditScore < 80) {
-      // 设置封禁时间
-      const banUntil = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      // 设置封禁时间（2天）
+      const banUntil = new Date(Date.now() + 48 * 60 * 60 * 1000);
       
       // 更新用户封禁状态
       await prisma.user.update({
@@ -97,6 +97,29 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    // 调用AI内容审核API
+    try {
+      const moderationRes = await fetch(`${req.nextUrl.origin}/api/moderation`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'post',
+          id: post.id,
+          content,
+          authorId: user.id
+        }),
+      });
+      
+      if (!moderationRes.ok) {
+        console.error('AI内容审核API调用失败:', await moderationRes.text());
+      }
+    } catch (error) {
+      console.error('AI内容审核失败，但帖子仍然已创建:', error);
+      // 审核失败不阻止帖子创建，仅记录错误
+    }
+
     return NextResponse.json({ post }, { status: 201 });
   } catch (error) {
     console.error("创建帖子失败:", error);
@@ -123,6 +146,7 @@ export async function GET(req: NextRequest) {
           select: {
             id: true,
             username: true,
+            avatar: true,
           },
         },
         category: true,

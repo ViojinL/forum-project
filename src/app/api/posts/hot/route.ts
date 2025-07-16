@@ -15,6 +15,12 @@ export async function GET() {
       select: {
         id: true,
         title: true,
+        author: {
+          select: {
+            username: true,
+            avatar: true
+          }
+        },
         _count: {
           select: {
             comments: true
@@ -23,14 +29,7 @@ export async function GET() {
       }
     });
     
-    // 转换为前端所需的格式
-    const formattedHotPosts = hotPosts.map(post => ({
-      id: post.id,
-      title: post.title,
-      commentCount: post._count.comments // 使用实际评论数
-    }));
-    
-    return NextResponse.json({ posts: formattedHotPosts });
+    return NextResponse.json({ posts: hotPosts });
   } catch (error) {
     console.error('获取热门帖子失败:', error);
     return NextResponse.json(
