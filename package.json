@@ -15,7 +15,13 @@
     "prisma:seed": "node prisma/seed.cjs",
     "scheduler:credit": "npx tsx scripts/credit-score-scheduler.ts",
     "scheduler:credit:once": "npx tsx scripts/credit-score-scheduler.ts --run-once",
-    "scheduler:credit:bg": "npx tsx scripts/credit-score-scheduler.ts > logs/scheduler.log 2>&1 &"
+    "scheduler:credit:bg": "npx tsx scripts/credit-score-scheduler.ts > logs/scheduler.log 2>&1 &",
+    "pm2:start": "pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop forum",
+    "pm2:restart": "pm2 restart forum",
+    "pm2:delete": "pm2 delete forum",
+    "pm2:logs": "pm2 logs forum",
+    "pm2:monit": "pm2 monit"
   },
   "dependencies": {
     "@next-auth/prisma-adapter": "^1.0.7",

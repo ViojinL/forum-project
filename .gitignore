@@ -1,6 +1,13 @@
 
-# dependencies
-/node_modules
+# ===== Node.js =====
+# 依赖目录
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# 包管理器
 /.pnp
 .pnp.*
 .yarn/*
@@ -9,50 +16,135 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
+# ===== Next.js =====
+# 构建输出
 /.next/
 /out/
-
-# production
 /build
 
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
+# 缓存
+.next/cache/
 .vercel
 
-# typescript
+# TypeScript 构建信息
 *.tsbuildinfo
 next-env.d.ts
 
-# 依赖目录
-node_modules/
-
-# Next.js 构建输出
-.next/
-out/
-
-# 环境变量文件
-.env*.local
+# ===== 环境变量 =====
+# 所有环境变量文件
+.env*
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# 开发数据库
-prisma/dev.db
-prisma/dev.db-journal
+# ===== 数据库 =====
+# Prisma 数据库文件
+prisma/dev.db*
+prisma/prisma/dev.db*
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
 
-# 日志
+# 数据库备份
+*.backup
+*.bak
+*_backup.*
+
+# ===== 日志文件 =====
+# 应用日志
+logs/
 *.log
+log/
+temp/
+
+# PM2 日志
+.pm2/
+ecosystem.config.js.backup
+
+# ===== 生成的文件 =====
+# Prisma 生成的客户端
+src/generated/
+generated/
+
+# 其他生成文件
+dist/
+build/
+coverage/
+
+# ===== 开发工具 =====
+# IDE 和编辑器
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS 相关
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===== 临时文件 =====
+# 临时文件和缓存
+tmp/
+temp/
+.cache/
+.tmp/
+
+# 上传文件目录
+public/uploads/
+uploads/
+
+# ===== 安全相关 =====
+# 证书和密钥
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# JWT 密钥文件
+jwt-key*
+
+# ===== 部署相关 =====
+# Docker
+Dockerfile.prod
+docker-compose.prod.yml
+.dockerignore
+
+# 部署脚本
+deploy.sh
+*.deploy
+
+# ===== 测试 =====
+# 测试覆盖率
+/coverage
+.nyc_output
+
+# 测试数据库
+test.db
+test.sqlite
+
+# ===== 杂项 =====
+# 压缩文件
+*.zip
+*.tar.gz
+*.rar
+
+# 文档生成
+/docs/build/
+
+# VSCode 计数器
+.VSCodeCounter/
+
+# 本地配置
+local.config.js
+local.config.json
