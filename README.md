@@ -1,4 +1,4 @@
-# 论坛项目 (Forum3)
+# 论坛项目 (Forum)
 
 一个使用 Next.js、Prisma 和 TypeScript 构建的论坛应用。
 
